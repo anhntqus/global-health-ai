@@ -14,7 +14,7 @@ import FutureTrends from './pages/FutureTrends.jsx';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/global-health-ai">
 
       <Routes>
         <Route path="/" element={<Home />} />

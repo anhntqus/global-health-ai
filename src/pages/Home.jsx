@@ -73,7 +73,7 @@ const Home = () => {
                                     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
 
                                         <video controls width="100%">
-                                            <source src="/AI_s_Role_in_Global_Health.mp4" type="video/mp4" />
+                                            <source src={`${import.meta.env.BASE_URL}AI_s_Role_in_Global_Health.mp4`} type="video/mp4" />
                                         </video>
 
                                     </Box>

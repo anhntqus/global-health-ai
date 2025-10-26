@@ -61,7 +61,7 @@ const AIApplications = () => {
                                     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
 
                                         <video controls width="100%">
-                                            <source src="/AI_Applications_in_Global_Health_Video.mp4" type="video/mp4" />
+                                            <source src={`${import.meta.env.BASE_URL}AI_Applications_in_Global_Health_Video.mp4`} type="video/mp4" />
                                         </video>
 
                                     </Box>
@@ -114,7 +114,7 @@ const AIApplications = () => {
                                         <Typography variant="body2">
                                             An AI algorithm can analyze blood images faster than humans, helping diagnose malaria in areas lacking specialist doctors <CitationLink citationKey="CITE_TREATMENT_05" />.
                                         </Typography>
-                                        <Box component="img" src="/malaria-image.jpg" alt="AI Diagnosis" sx={{ width: '100%', mt: 2 }} />
+                                        <Box component="img" src={`${import.meta.env.BASE_URL}malaria-image.jpg`} alt="AI Diagnosis" sx={{ width: '100%', mt: 2 }} />
                                     </CardContent>
                                 </Card>
                             </motion.div>
