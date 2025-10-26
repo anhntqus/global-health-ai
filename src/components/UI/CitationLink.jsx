@@ -1,6 +1,7 @@
 import React from 'react';
 import { CITATIONS } from '../../data/citations';
-import { Typography, Link } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const CitationLink = ({ citationKey }) => {
     const citation = CITATIONS[citationKey];
@@ -8,7 +9,10 @@ const CitationLink = ({ citationKey }) => {
 
     return (
         <sup id={`ref-${citation.id}`}>
-            <Link href={`/references#cite-${citation.id}`} sx={{ textDecoration: 'none', fontWeight: 'bold' }}>
+            <Link
+                to={`/references#cite-${citation.id}`}
+                style={{ textDecoration: 'none', fontWeight: 'bold', color: 'inherit' }}
+            >
                 [{citation.id}]
             </Link>
         </sup>

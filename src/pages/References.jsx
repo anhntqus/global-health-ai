@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, List, ListItem, Link, TextField, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 import MainLayout from '../components/Layout/MainLayout';
@@ -9,6 +9,19 @@ const References = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [submitted, setSubmitted] = useState(false);
+
+    // Handle scroll to citation when page loads with hash
+    useEffect(() => {
+        const hash = window.location.hash;
+        if (hash) {
+            setTimeout(() => {
+                const element = document.querySelector(hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
