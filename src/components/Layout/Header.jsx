@@ -5,11 +5,12 @@ import { NavLink } from 'react-router-dom';
 
 const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Interdependence', path: '/interdependence' },
+    { name: 'Data Hub', path: '/data-hub' },
     { name: 'AI Applications', path: '/ai-applications' },
+    { name: 'Interdependence', path: '/interdependence' },
     { name: 'Ethics & Security', path: '/ethics-security' },
     { name: 'Food & Health', path: '/food-health' },
-    { name: 'Data Hub', path: '/data-hub' },
+    { name: 'Future Trends', path: '/future-trends' },
     { name: 'AI Assistant', path: '/assistant' },
     { name: 'References', path: '/references' },
 ];

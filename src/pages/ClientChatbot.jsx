@@ -5,19 +5,15 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-// ----------------------------------------------------
-// Dữ liệu và Tiền xử lý (Giả định Logic)
-// ----------------------------------------------------
-
-// Từ điển mã hóa: mô phỏng quá trình token hóa và vector hóa
+// Data and Preprocessing (Mock Logic)
 const WORD_INDEX = {
-    'chào': 1, 'bạn': 2, 'giá': 3, 'bao': 4, 'nhiêu': 5,
+    'hello': 1, 'price': 2, 'thank you': 3, 'sorry': 4,
     'cảm': 6, 'ơn': 7, 'xin': 8, 'cám': 9,
 };
 const INTENT_CLASSES = ['chao_hoi', 'hoi_gia', 'cam_on', 'khác'];
 const MAX_SEQUENCE_LENGTH = 10; // Độ dài tối đa của chuỗi input
 
-// Hàm Tiền xử lý: chuyển câu thành mảng số (vector) cho mô hình
+// Preprocessing Function: convert text to array of numbers (vector) for model
 const preprocess = (text) => {
     if (!text || typeof text !== 'string') {
         return new Array(MAX_SEQUENCE_LENGTH).fill(0);
@@ -28,12 +24,12 @@ const preprocess = (text) => {
         .map(word => WORD_INDEX[word] || 0) // Ánh xạ từ thành số
         .filter(val => val !== 0);
 
-    // Đảm bảo có ít nhất một phần tử
+    // Ensure at least one element
     if (sequence.length === 0) {
         sequence = [0];
     }
 
-    // Đệm (padding) chuỗi đầu vào
+    // Pad input string
     while (sequence.length < MAX_SEQUENCE_LENGTH) {
         sequence.push(0);
     }
@@ -41,7 +37,7 @@ const preprocess = (text) => {
 };
 
 // ----------------------------------------------------
-// Component chính React
+// Main React Component
 // ----------------------------------------------------
 
 const ClientChatbot = () => {
@@ -51,28 +47,28 @@ const ClientChatbot = () => {
     const [loading, setLoading] = useState(true);
     const messagesEndRef = useRef(null);
 
-    // Cuộn xuống cuối tin nhắn
+    // Scroll to bottom of messages
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    // 1. Tải Mô hình (Chỉ chạy một lần khi component mount)
+    // 1. Load Model (Only run once when component mounts)
     useEffect(() => {
         const loadModel = async () => {
             try {
-                // Tải mô hình từ thư mục public, chạy hoàn toàn client-side
+                // Load model from public directory, run completely client-side
                 const loadedModel = await tf.loadLayersModel('/model/model.json');
                 setModel(loadedModel);
                 setLoading(false);
-                setMessages([{ sender: 'bot', text: '🤖 Đã tải AI thành công! Bạn cần hỗ trợ gì?' }]);
+                setMessages([{ sender: 'bot', text: 'AI model loaded successfully! What do you need help with?' }]);
             } catch (error) {
-                console.error('Lỗi khi tải mô hình TF.js:', error);
+                console.error('Error loading TF.js model:', error);
                 setLoading(false);
                 // Fallback: Sử dụng mô hình giả lập khi không có file mô hình
                 setModel('mock');
                 setMessages([{
                     sender: 'bot',
-                    text: '⚠️ Chế độ demo: Mô hình AI không có sẵn, sử dụng logic giả lập.'
+                    text: 'Demo mode: AI model not available, using mock logic.'
                 }]);
             }
         };
@@ -83,22 +79,22 @@ const ClientChatbot = () => {
         scrollToBottom();
     }, [messages]);
 
-    // Logic tạo phản hồi dựa trên Ý định (Intent)
+    // Logic to create response based on Intent
     const getBotResponse = (intent) => {
         switch (intent) {
             case 'chao_hoi':
-                return 'Xin chào! Tôi là AI chạy trên trình duyệt của bạn.';
+                return 'Hello! I am an AI running on your browser.';
             case 'hoi_gia':
-                return 'Về giá, tôi cần bạn truy cập trang pricing để xem chi tiết.';
+                return 'About price, you need to visit the pricing page to see details.';
             case 'cam_on':
-                return 'Bạn thật tử tế! Không có gì.';
+                return 'You are very kind! Nothing to say.';
             case 'khác':
             default:
-                return 'Xin lỗi, tôi chỉ hiểu các chủ đề cơ bản (Chào hỏi, Giá).';
+                return 'Sorry, I only understand basic topics (Hello, Price).';
         }
     };
 
-    // 2. Xử lý Gửi và Suy luận
+    // 2. Process Send and Inference
     const handleSend = async () => {
         if (!input.trim() || !model) return;
 
@@ -118,14 +114,14 @@ const ClientChatbot = () => {
             if (model === 'mock') {
                 // Logic giả lập dựa trên từ khóa
                 const lowerInput = currentInput.toLowerCase();
-                let predictedIntent = 'khác';
+                let predictedIntent = 'other';
 
-                if (lowerInput.includes('chào') || lowerInput.includes('xin chào')) {
-                    predictedIntent = 'chao_hoi';
-                } else if (lowerInput.includes('giá') || lowerInput.includes('bao nhiêu')) {
-                    predictedIntent = 'hoi_gia';
-                } else if (lowerInput.includes('cảm ơn') || lowerInput.includes('cám ơn')) {
-                    predictedIntent = 'cam_on';
+                if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+                    predictedIntent = 'greet';
+                } else if (lowerInput.includes('price') || lowerInput.includes('price')) {
+                    predictedIntent = 'ask_price';
+                } else if (lowerInput.includes('thank you') || lowerInput.includes('thank you')) {
+                    predictedIntent = 'thank_you';
                 }
 
                 const botText = getBotResponse(predictedIntent);
@@ -147,7 +143,7 @@ const ClientChatbot = () => {
             // e. Validation kết quả
             const predictedIntent = INTENT_CLASSES[intentIndex] || 'khác';
 
-            // f. Tạo và Cập nhật phản hồi bot
+            // f. Create and Update bot response
             const botText = getBotResponse(predictedIntent);
 
             setTimeout(() => {
@@ -156,26 +152,26 @@ const ClientChatbot = () => {
             }, 500);
 
         } catch (error) {
-            console.error('Lỗi trong quá trình xử lý:', error);
+            console.error('Error processing:', error);
             setTimeout(() => {
                 const botMessage = {
                     sender: 'bot',
-                    text: '❌ Lỗi xử lý: Vui lòng thử lại.'
+                    text: 'Error processing: Please try again.'
                 };
                 setMessages((prev) => [...prev, botMessage]);
             }, 500);
         } finally {
-            // g. Giải phóng bộ nhớ Tensor
+            // g. Release Tensor memory
             if (inputTensor) inputTensor.dispose();
             if (prediction) prediction.dispose();
         }
     };
 
-    // 3. Giao diện (Material UI)
+    // 3. Interface
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
             <Typography variant="h4" gutterBottom>
-                🤖 Chatbot Client-Side (TF.js)
+                Chatbot Client-Side (TF.js)
             </Typography>
             <Paper elevation={3} sx={{ height: 500, display: 'flex', flexDirection: 'column' }}>
                 {loading ? (

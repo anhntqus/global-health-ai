@@ -1,4 +1,3 @@
-// src/pages/FoodHealth.jsx
 import React from 'react';
 import { Container, Typography, Box, Paper, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -41,26 +40,8 @@ const FoodHealth = () => {
                     variants={staggerContainer}
                 >
                     <Grid container spacing={4}>
-                        {/* Cột Nội dung Chính */}
-                        <Grid item xs={12} md={8}>
-                            <motion.div variants={fadeInUp}>
-                                <Paper
-                                    elevation={3}
-                                    sx={{
-                                        p: 4,
-                                        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-                                        '&:hover': {
-                                            transform: 'translateY(-4px)',
-                                            boxShadow: 6
-                                        }
-                                    }}
-                                >
-                                    {body}
-                                </Paper>
-                            </motion.div>
-                        </Grid>
 
-                        {/* Cột Đa phương tiện */}
+                        {/* Multimedia Column */}
                         <Grid item xs={12} md={4}>
                             <motion.div variants={fadeInUp}>
                                 <Paper
@@ -94,6 +75,27 @@ const FoodHealth = () => {
                                 </Paper>
                             </motion.div>
                         </Grid>
+
+                        {/* Main Content Column */}
+                        <Grid item xs={12} md={8}>
+                            <motion.div variants={fadeInUp}>
+                                <Paper
+                                    elevation={3}
+                                    sx={{
+                                        p: 4,
+                                        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px)',
+                                            boxShadow: 6
+                                        }
+                                    }}
+                                >
+                                    {body}
+                                </Paper>
+                            </motion.div>
+                        </Grid>
+
+
                     </Grid>
                 </motion.div>
             </Container>

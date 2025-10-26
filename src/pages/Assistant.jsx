@@ -3,7 +3,7 @@ import { Container, Typography, Box, TextField, Button, Paper, CircularProgress 
 import { motion } from 'framer-motion';
 import MainLayout from '../components/Layout/MainLayout';
 // Environment variables
-const HF_TOKEN = "import.meta.env.VITE_HF_TOKEN";
+const HF_TOKEN = import.meta.env.VITE_HF_TOKEN || "BACKUP_HUGGING_FACE_TOKEN";
 const HF_MODEL_URL = import.meta.env.VITE_HF_MODEL_URL || "https://api-inference.huggingface.co/models/distilgpt2";
 
 const Assistant = () => {
@@ -99,10 +99,12 @@ const Assistant = () => {
                     animate="animate"
                     variants={fadeInUp}
                 >
-                    <Typography variant="h2" component="h1" gutterBottom align="center" color="primary">
+                    <Typography variant="h3" component="h1" gutterBottom align="center" color="primary">
                         AI Assistant
                     </Typography>
-
+                    <Typography variant="h6" component="h2" gutterBottom align="center" color="text.secondary">
+                        This is a prototype of an AI assistant. It is not fully functional and is under development.
+                    </Typography>
                 </motion.div>
 
                 <motion.div
@@ -124,7 +126,7 @@ const Assistant = () => {
                             }
                         }}
                     >
-                        {/* Khu vực tin nhắn */}
+                        {/* Message Area */}
                         <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2 }}>
                             {messages.map((msg, index) => (
                                 <Box key={index} sx={{
@@ -151,8 +153,9 @@ const Assistant = () => {
                             <div ref={messagesEndRef} />
                         </Box>
 
-                        {/* Khu vực nhập liệu */}
+                        {/* Input Area */}
                         <Box sx={{ p: 2, borderTop: '1px solid #ccc', display: 'flex' }}>
+                            {/* Text Field */}
                             <TextField
                                 fullWidth
                                 variant="outlined"
@@ -163,10 +166,12 @@ const Assistant = () => {
                                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                                 disabled={loading}
                             />
+                            {/* Send Button */}
                             <Button variant="contained" color="primary" onClick={handleSend} sx={{ ml: 1 }} disabled={loading}>
                                 {loading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
                             </Button>
                         </Box>
+
                     </Paper>
                 </motion.div>
             </Container>
